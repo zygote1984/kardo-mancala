@@ -61,15 +61,19 @@ public class CircularBoard {
 		return board.get(index).getPlayer();
 	}
 
-	public void distributeSeeds(int index) {
+	/**
+	 * distributes the seeds in bowl to the subsequent bowls
+	 * @return true if the last seed ends up in user's grava hal
+	 */
+	public boolean distributeSeeds(int index) {
 		logger.log(Level.INFO, "Distribute seeds from bowl " + index);
 		AbstractBowl bowl = board.get(index);
 		int player = bowl.getPlayer();
 		int seeds = bowl.empty();
 		logger.log(Level.INFO, "Bowl is emptied " + bowl.getSeeds());
-
+		boolean isUsersGravaHal = false;
 		for (int i = 1; i <= seeds; i++) {
-			boolean isUsersGravaHal = bowl.getNext() instanceof GravaHal
+			isUsersGravaHal = bowl.getNext() instanceof GravaHal
 					&& bowl.getNext().getPlayer() == player;
 			boolean isOpponentsGravaHal = bowl.getNext() instanceof GravaHal
 					&& bowl.getNext().getPlayer() != player;
@@ -81,11 +85,12 @@ public class CircularBoard {
 				bowl.getNext().increment();
 				bowl = bowl.getNext();
 			}
-			
-			if(i == seeds) {
-				
-			}
 		}
+		if(isUsersGravaHal) {
+			logger.log(Level.INFO, "The last seed ended up in user's grava hal");
+			return true;
+		}
+		return false;
 	}
 
 }
