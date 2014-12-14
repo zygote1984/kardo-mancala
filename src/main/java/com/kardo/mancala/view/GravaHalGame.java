@@ -1,13 +1,15 @@
 package com.kardo.mancala.view;
 
 import java.awt.Color;
+import java.awt.ComponentOrientation;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.awt.RenderingHints;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -17,9 +19,9 @@ import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
 import com.kardo.mancala.controller.Game;
-import com.kardo.mancala.model.Bowl;
+import com.kardo.mancala.model.AbstractBowl;
 
-public class Board extends JApplet {
+public class GravaHalGame extends JApplet {
 
 	JPanel grava1;
 	JPanel userBowls1;
@@ -43,10 +45,12 @@ public class Board extends JApplet {
 		grava2.setPreferredSize(new Dimension(width, width * 2));
 		grava2.setBackground(Color.lightGray);
 		userBowls1 = new JPanel(new GridLayout(1, 6));
+		userBowls1.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		grava1 = new JPanel();
 		grava1.setPreferredSize(new Dimension(width, width * 2));
 		grava1.setBackground(Color.lightGray);
 		userBowls2 = new JPanel(new GridLayout(1, 6));
+		userBowls2.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		bowls = new JPanel();
 		bowls.setLayout(new BoxLayout(bowls, BoxLayout.Y_AXIS));
 
@@ -56,10 +60,10 @@ public class Board extends JApplet {
 		boardGUI.add(grava1);
 		createBowls(userBowls2);
 		boardGUI.add(grava2);
-		createSeeds();
-		
-		bowls.add(userBowls1);
+		refreshSeeds();
+
 		bowls.add(userBowls2);
+		bowls.add(userBowls1);
 		
 		contentPane.add(grava2);
 		contentPane.add(bowls);
@@ -72,18 +76,47 @@ public class Board extends JApplet {
 
 	public void createBowls(JPanel userBowls) {
 		for(int i = 0; i < 6; i++) {
-			JPanel bowl = new JPanel();
+			final JPanel bowl = new JPanel();
 			bowl.setPreferredSize(new Dimension(width, width));
-			bowl.setLayout(new FlowLayout(FlowLayout.CENTER));
 			bowl.setBackground(Color.yellow);
 			bowl.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED, Color.lightGray, Color.GRAY));
 			userBowls.add(bowl);
 			boardGUI.add(bowl);
+			bowl.addMouseListener(new MouseListener() {			
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void mousePressed(MouseEvent e) {
+					// TODO Auto-generated method stub					
+				}
+				
+				@Override
+				public void mouseExited(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void mouseClicked(MouseEvent e) {	
+					game.distributeSeeds(boardGUI.indexOf(e.getComponent()));	
+					refreshSeeds();
+				}
+			});
 		}
 	}
 	
-	public void createSeeds() {
-		ArrayList<Bowl> board = game.getBoard();
+	public void refreshSeeds() {
+		ArrayList<AbstractBowl> board = game.getBoard();
 		for(int i = 0; i < board.size(); i++) {
 			int seeds = board.get(i).getSeeds();
 			createSeeds(boardGUI.get(i), seeds);		
@@ -92,9 +125,12 @@ public class Board extends JApplet {
 	}
 
 	private void createSeeds(JPanel bowl, int seeds) {
+		bowl.removeAll();
+		bowl.setLayout(new FlowLayout(FlowLayout.CENTER));
 		for(int i = 0; i < seeds; i++){
 			bowl.add(new Seed());
-		}		
+		}
+		bowl.updateUI();
 	}
 	
 	
