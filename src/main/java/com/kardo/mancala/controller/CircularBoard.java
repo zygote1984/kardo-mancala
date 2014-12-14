@@ -12,9 +12,7 @@ public class CircularBoard {
 
 	private Logger logger = Logger.getLogger("Board");
 	private ArrayList<AbstractBowl> board;
-	private final int player1 = 1;
-	private final int player2 = 2;
-	private int initalNrOfSeeds = 6;
+	private int initalNrOfSeeds = GameConstants.INIT_NR_OF_SEEDS;
 	private Bowl headBowl;
 
 	public CircularBoard() {
@@ -29,11 +27,11 @@ public class CircularBoard {
 	}
 
 	private void initBoard() {
-		headBowl = new Bowl(initalNrOfSeeds, player1, null);
+		headBowl = new Bowl(initalNrOfSeeds, GameConstants.PLAYER_1, null);
 		AbstractBowl curBowl = headBowl;
 		board.add(curBowl);
 		for (int i = 2; i <= 14; i++) {
-			int player = ((double)i / 7 )<= 1 ? player1 : player2;
+			int player = ((double)i / 7 )<= 1 ? GameConstants.PLAYER_1 : GameConstants.PLAYER_2;
 			if (i % 7 != 0) {
 				curBowl.setNext(new Bowl(initalNrOfSeeds, player, null));
 			} else {
