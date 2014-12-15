@@ -31,7 +31,8 @@ public class CircularBoard {
 		AbstractBowl curBowl = headBowl;
 		board.add(curBowl);
 		for (int i = 2; i <= 14; i++) {
-			int player = ((double)i / 7 )<= 1 ? GameConstants.PLAYER_1 : GameConstants.PLAYER_2;
+			int player = ((double) i / 7) <= 1 ? GameConstants.PLAYER_1
+					: GameConstants.PLAYER_2;
 			if (i % 7 != 0) {
 				curBowl.setNext(new Bowl(initalNrOfSeeds, player, null));
 			} else {
@@ -63,6 +64,7 @@ public class CircularBoard {
 
 	/**
 	 * distributes the seeds in bowl to the subsequent bowls
+	 * 
 	 * @return true if the last seed ends up in user's grava hal
 	 */
 	public boolean distributeSeeds(int index) {
@@ -77,20 +79,30 @@ public class CircularBoard {
 					&& bowl.getNext().getPlayer() == player;
 			boolean isOpponentsGravaHal = bowl.getNext() instanceof GravaHal
 					&& bowl.getNext().getPlayer() != player;
-			
-			if(isOpponentsGravaHal) {
+
+			if (isOpponentsGravaHal) {
 				bowl = bowl.getNext();
 			}
-			if (bowl.getNext() instanceof Bowl || isUsersGravaHal) {
+			if (bowl.getNext().isEmpty() && bowl.getNext().getPlayer() == player
+					&& bowl.getNext() instanceof Bowl && i == seeds) {
+				int idxOfBowl = board.indexOf(bowl.getNext());
+				int gravaHalIdx = player * 7 - 1;
+				int oppositeBowlIdx = (6 - idxOfBowl) * 2 + idxOfBowl;
+				if (!board.get(oppositeBowlIdx).isEmpty()) {
+					int opponentsSeeds = board.get(oppositeBowlIdx).empty();
+					((GravaHal) board.get(gravaHalIdx))
+							.addSeeds(1 + opponentsSeeds);
+				}
+			} else if (bowl.getNext() instanceof Bowl || isUsersGravaHal) {
 				bowl.getNext().increment();
 				bowl = bowl.getNext();
 			}
 		}
-		if(isUsersGravaHal) {
+
+		if (isUsersGravaHal) {
 			logger.log(Level.INFO, "The last seed ended up in user's grava hal");
 			return true;
 		}
 		return false;
 	}
-
 }
