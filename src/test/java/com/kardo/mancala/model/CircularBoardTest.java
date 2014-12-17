@@ -1,4 +1,4 @@
-package com.kardo.mancala.controller;
+package com.kardo.mancala.model;
 
 import static org.junit.Assert.*;
 
@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.kardo.mancala.model.AbstractBowl;
 import com.kardo.mancala.model.Bowl;
+import com.kardo.mancala.model.CircularBoard;
 import com.kardo.mancala.model.GravaHal;
 
 public class CircularBoardTest {
@@ -58,12 +59,6 @@ public class CircularBoardTest {
 
 	}
 
-	@Test
-	public void testDistributeSeeds() {
-		board = new CircularBoard(3);
-		board.distributeSeeds(3);
-		assertEquals(0, board.getBowl(3).getSeeds());
-		assertEquals(4, board.getBowl(3).getNext().getSeeds());		
-	}
+
 
 }
