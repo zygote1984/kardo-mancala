@@ -9,6 +9,12 @@ import com.kardo.mancala.model.Bowl;
 import com.kardo.mancala.model.CircularBoard;
 import com.kardo.mancala.model.GravaHal;
 
+/**
+ * This class implements the game mechanics and hold the turn information.
+ * 
+ * @author kardo
+ *
+ */
 public class Game {
 	private Logger logger = Logger.getLogger("Game");
 	protected CircularBoard circularBoard;

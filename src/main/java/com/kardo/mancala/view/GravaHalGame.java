@@ -25,6 +25,11 @@ import com.kardo.mancala.controller.Game;
 import com.kardo.mancala.controller.GameConstants;
 import com.kardo.mancala.model.AbstractBowl;
 
+/**
+ * Implements the UI of the game.
+ * @author kardo
+ *
+ */
 public class GravaHalGame extends JApplet {
 
 	JPanel grava1;

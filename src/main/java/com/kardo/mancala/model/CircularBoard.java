@@ -1,11 +1,16 @@
 package com.kardo.mancala.model;
 
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import com.kardo.mancala.controller.GameConstants;
 
+/**
+ * Data structure that represents a the circular mancala board. Each bowl has a
+ * reference to the next bowl in the counter clockwise direction.
+ * 
+ * @author kardo
+ *
+ */
 public class CircularBoard {
 
 	private ArrayList<AbstractBowl> board;

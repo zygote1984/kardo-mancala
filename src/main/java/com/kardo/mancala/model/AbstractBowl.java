@@ -1,5 +1,11 @@
 package com.kardo.mancala.model;
 
+/**
+ * Root of the bowl hierarchy. Represents a bowl which holds seeds and belongs to a specific player.
+ * 
+ * @author kardo
+ *
+ */
 public abstract class AbstractBowl {
 	int seeds;
 	int player;

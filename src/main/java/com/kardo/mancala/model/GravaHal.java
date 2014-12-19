@@ -6,7 +6,10 @@ public class GravaHal extends AbstractBowl {
 		super(seeds, player, next);
 	}
 	
-	
+	/**
+	 * extra method to add more than one seed
+	 * @param newSeeds
+	 */
 	public void addSeeds(int newSeeds) {
 		seeds += newSeeds;
 	}
