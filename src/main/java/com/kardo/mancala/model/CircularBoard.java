@@ -17,7 +17,7 @@ public class CircularBoard {
 		initBoard();
 	}
 
-	protected CircularBoard(int initNrSeeds) {
+	public CircularBoard(int initNrSeeds) {
 		initalNrOfSeeds = initNrSeeds;
 		board = new ArrayList<>();
 		initBoard();
@@ -63,5 +63,8 @@ public class CircularBoard {
 		return board.indexOf(bowl);
 	}
 
+	public int empty(int index) {
+		return getBowl(index).empty();
+	}
 
 }

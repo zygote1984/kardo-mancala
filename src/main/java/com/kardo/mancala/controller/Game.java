@@ -11,7 +11,7 @@ import com.kardo.mancala.model.GravaHal;
 
 public class Game {
 	private Logger logger = Logger.getLogger("Game");
-	CircularBoard circularBoard;
+	protected CircularBoard circularBoard;
 	private int turn = GameConstants.PLAYER_1;
 
 	public Game() {
@@ -23,7 +23,7 @@ public class Game {
 	}
 
 	public boolean distributeSeeds(int index) {
-		if (turn == circularBoard.getBowl(index).getPlayer()) {
+		if (turn == circularBoard.getPlayer(index)) {
 			if (!playTurn(index)) {
 				switchTurns();
 			}
@@ -49,8 +49,8 @@ public class Game {
 	private boolean playTurn(int index) {
 		logger.log(Level.INFO, "Distribute seeds from bowl " + index);
 		AbstractBowl bowl = circularBoard.getBowl(index);
-		int player = bowl.getPlayer();
-		int seeds = bowl.empty();
+		int player = circularBoard.getPlayer(index);
+		int seeds = circularBoard.empty(index);
 		logger.log(Level.INFO, "Bowl is emptied " + bowl.getSeeds());
 		boolean isUsersGravaHal = false;
 		for (int i = 1; i <= seeds; i++) {
