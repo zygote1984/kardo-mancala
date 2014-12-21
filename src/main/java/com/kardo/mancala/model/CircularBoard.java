@@ -83,7 +83,6 @@ public class CircularBoard {
 				* NR_OF_BOWLS_PER_PLAYER - 1; i++) {
 			totalSeeds += empty ? empty(i) : board.get(i).getSeeds();
 		}
-		System.out.println(player + " " + totalSeeds);
 		return totalSeeds;
 	}
 

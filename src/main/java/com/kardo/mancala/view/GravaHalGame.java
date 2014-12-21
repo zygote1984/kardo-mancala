@@ -6,16 +6,22 @@ import java.awt.ComponentOrientation;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JApplet;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -23,18 +29,22 @@ import javax.swing.border.BevelBorder;
 
 import com.kardo.mancala.controller.Game;
 import com.kardo.mancala.controller.GameConstants;
+import com.kardo.mancala.controller.GameListener;
 import com.kardo.mancala.model.AbstractBowl;
 
 /**
  * Implements the UI of the game.
+ * 
  * @author kardo
  *
  */
-public class GravaHalGame extends JApplet {
+public class GravaHalGame extends JApplet implements ActionListener {
 
+	private static final String RESTART = "restart";
 	private static final Color BG = Color.decode("#FFDBDB");
 	private static final String BOWL_BG = "#FFEDA9";
 	private static final String TURN_COLOR = "#FF9900";
+	private Logger logger = Logger.getLogger("GravaHalGUI");
 	JPanel grava1;
 	JPanel userBowls1;
 	JPanel grava2;
@@ -52,10 +62,14 @@ public class GravaHalGame extends JApplet {
 
 	@Override
 	public void init() {
-
 		this.setSize(width * 8, width * 2 + 50);
+		initGUI();
+	}
 
+	private void initGUI() {
+		logger.log(Level.INFO, "Initializing Game GUI");
 		game = new Game();
+		game.setListener(new MyGameListener());
 		boardGUI = new ArrayList<>();
 		contentPane = new JPanel();
 		contentPane.setLayout(new BorderLayout());
@@ -93,7 +107,7 @@ public class GravaHalGame extends JApplet {
 		boardGUI.add(grava1);
 		createBowls(userBowls2);
 		boardGUI.add(grava2);
-		refreshSeeds(0);
+		refreshSeeds();
 
 		refreshInfoPanels();
 
@@ -109,13 +123,13 @@ public class GravaHalGame extends JApplet {
 		contentPane.add(lowerPanel, BorderLayout.SOUTH);
 
 		this.setContentPane(contentPane);
-
+		revalidate();
+		repaint();
 	}
 
 	private void refreshInfoPanels() {
 		upperPanel.removeAll();
 		lowerPanel.removeAll();
-		
 
 		upperPanel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		upperPanel.add(user1Label);
@@ -124,14 +138,14 @@ public class GravaHalGame extends JApplet {
 					.getComponentCount()), SwingConstants.CENTER));
 		}
 		upperPanel.add(user2Label);
-		
+
 		lowerPanel.add(new JLabel(String.valueOf(boardGUI.get(13)
-				.getComponentCount()),SwingConstants.CENTER));
+				.getComponentCount()), SwingConstants.CENTER));
 		for (int i = 0; i < 7; i++) {
 			lowerPanel.add(new JLabel(String.valueOf(boardGUI.get(i)
-					.getComponentCount()),SwingConstants.CENTER));
+					.getComponentCount()), SwingConstants.CENTER));
 		}
-		
+
 		setTurnColor();
 
 	}
@@ -185,17 +199,13 @@ public class GravaHalGame extends JApplet {
 
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					if (game.distributeSeeds(boardGUI.indexOf(e.getComponent()))) {
-						refreshSeeds(boardGUI.indexOf(e.getComponent()));
-						refreshInfoPanels();
-					}
-					
+					game.distributeSeeds(boardGUI.indexOf(e.getComponent()));
 				}
 			});
 		}
 	}
 
-	public void refreshSeeds(int index) {
+	public void refreshSeeds() {
 		ArrayList<AbstractBowl> board = game.getBoard();
 		for (int i = 0; i < board.size(); i++) {
 			int seeds = board.get(i).getSeeds();
@@ -210,6 +220,36 @@ public class GravaHalGame extends JApplet {
 			bowl.add(new Seed());
 		}
 		bowl.updateUI();
+	}
+
+	private void displayResult(int winner) {
+		JLabel resultLabel;
+		if (winner > 0) {
+			resultLabel = new JLabel("Player " + winner + " won!");
+		} else {
+			resultLabel = new JLabel("It'a tie!");
+		}
+		resultLabel.setPreferredSize(new Dimension(width * 4, width));
+	    resultLabel.setFont(new Font("Courier New", Font.ITALIC, 50));
+
+
+		JPanel winnerPanel = new JPanel();
+		winnerPanel.setLayout(new BoxLayout(winnerPanel, BoxLayout.Y_AXIS));
+		winnerPanel.setPreferredSize(new Dimension(width * 4, width * 2));
+
+		JButton newGame = new JButton("New Game");
+		newGame.setPreferredSize(new Dimension(width * 2, width / 2));
+		newGame.setActionCommand(RESTART);
+		newGame.addActionListener(this);
+		
+		winnerPanel.add(resultLabel);
+		winnerPanel.add(newGame);
+
+		contentPane = new JPanel(new BorderLayout());
+		contentPane.add(winnerPanel, BorderLayout.CENTER);
+		this.setContentPane(winnerPanel);
+		revalidate();
+		repaint();
 	}
 
 	class Seed extends JPanel {
@@ -233,6 +273,33 @@ public class GravaHalGame extends JApplet {
 			return false;
 		}
 
+	}
+
+	class MyGameListener implements GameListener {
+
+		@Override
+		public void updateBoard() {
+			refreshSeeds();
+			refreshInfoPanels();
+		}
+
+		@Override
+		public void announceWinner(int winner) {
+			displayResult(winner);
+		}
+
+		@Override
+		public void annouceTie() {
+			displayResult(-1);
+		}
+
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getActionCommand().equals(RESTART)) {
+			initGUI();
+		}
 	}
 
 }

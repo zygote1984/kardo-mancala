@@ -31,7 +31,7 @@ public class GameTest {
 	@Test
 	public void testGetTurn() {
 		assertEquals(GameConstants.PLAYER_1, game.getTurn());
-		assertTrue(game.distributeSeeds(0));
+		game.distributeSeeds(0);
 		assertEquals(GameConstants.PLAYER_1, game.getTurn());
 		game.distributeSeeds(5);
 		assertEquals(GameConstants.PLAYER_2, game.getTurn());
