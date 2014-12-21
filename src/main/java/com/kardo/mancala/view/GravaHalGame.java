@@ -32,6 +32,9 @@ import com.kardo.mancala.model.AbstractBowl;
  */
 public class GravaHalGame extends JApplet {
 
+	private static final Color BG = Color.decode("#FFDBDB");
+	private static final String BOWL_BG = "#FFEDA9";
+	private static final String TURN_COLOR = "#FF9900";
 	JPanel grava1;
 	JPanel userBowls1;
 	JPanel grava2;
@@ -70,7 +73,7 @@ public class GravaHalGame extends JApplet {
 
 		grava2 = new JPanel();
 		grava2.setPreferredSize(new Dimension(width, width * 2));
-		grava2.setBackground(Color.lightGray);
+		grava2.setBackground(BG);
 		grava2.setLayout(new FlowLayout());
 
 		userBowls1 = new JPanel(new GridLayout(1, 6));
@@ -79,7 +82,7 @@ public class GravaHalGame extends JApplet {
 		grava1 = new JPanel();
 		grava1.setLayout(new FlowLayout());
 		grava1.setPreferredSize(new Dimension(width, width * 2));
-		grava1.setBackground(Color.lightGray);
+		grava1.setBackground(BG);
 
 		userBowls2 = new JPanel(new GridLayout(1, 6));
 		userBowls2.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
@@ -135,11 +138,11 @@ public class GravaHalGame extends JApplet {
 
 	private void setTurnColor() {
 		if (game.getTurn() == GameConstants.PLAYER_1) {
-			user1Label.setBackground(Color.RED);
-			user2Label.setBackground(Color.LIGHT_GRAY);
+			user1Label.setBackground(Color.decode(TURN_COLOR));
+			user2Label.setBackground(BG);
 		} else if (game.getTurn() == GameConstants.PLAYER_2) {
-			user2Label.setBackground(Color.RED);
-			user1Label.setBackground(Color.LIGHT_GRAY);
+			user2Label.setBackground(Color.decode(TURN_COLOR));
+			user1Label.setBackground(BG);
 		}
 		user1Label.repaint();
 		user2Label.repaint();
@@ -151,7 +154,7 @@ public class GravaHalGame extends JApplet {
 		for (int i = 0; i < 6; i++) {
 			final JPanel bowl = new JPanel();
 			bowl.setPreferredSize(new Dimension(width, width));
-			bowl.setBackground(Color.yellow);
+			bowl.setBackground(Color.decode(BOWL_BG));
 			bowl.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED,
 					Color.lightGray, Color.GRAY));
 			userBowls.add(bowl);
@@ -210,22 +213,19 @@ public class GravaHalGame extends JApplet {
 	}
 
 	class Seed extends JPanel {
+		private static final String SEED_COLOR = "#5A0000";
+
 		@Override
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D g2d = (Graphics2D) g;
-			g2d.setColor(Color.RED);
+			g2d.setColor(Color.decode(SEED_COLOR));
 			g2d.fillOval(0, 0, 20, 20);
 		}
 
 		@Override
 		public Dimension getPreferredSize() {
 			return new Dimension(20, 20);
-		}
-
-		@Override
-		public Color getBackground() {
-			return Color.yellow;
 		}
 
 		@Override

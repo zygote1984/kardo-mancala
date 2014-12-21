@@ -62,4 +62,11 @@ public abstract class AbstractBowl {
 	public boolean isEmpty() {
 		return seeds == 0;
 	}
+
+	@Override
+	public String toString() {
+		return "AbstractBowl [seeds=" + seeds + ", player=" + player + "]";
+	}
+	
+	
 }

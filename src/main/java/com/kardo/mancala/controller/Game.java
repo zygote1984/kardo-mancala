@@ -29,10 +29,18 @@ public class Game {
 	}
 
 	public boolean distributeSeeds(int index) {
-		if (turn == circularBoard.getPlayer(index)) {
+		if (turn == circularBoard.getPlayer(index) && !circularBoard.getBowl(index).isEmpty()) {
 			if (!playTurn(index)) {
 				switchTurns();
 			}
+			return true;
+		}
+		return false;
+	}
+
+	private boolean checkGameEnd() {
+		if(circularBoard.getPlayerSeeds(GameConstants.PLAYER_1, false) == 0 ||
+		   circularBoard.getPlayerSeeds(GameConstants.PLAYER_2, false) == 0) {
 			return true;
 		}
 		return false;
@@ -71,11 +79,10 @@ public class Game {
 			if (bowl.getNext().isEmpty() && bowl.getNext().getPlayer() == player
 					&& bowl.getNext() instanceof Bowl && i == seeds) {
 				int idxOfBowl = circularBoard.getIndexOf(bowl.getNext());
-				int gravaHalIdx = player * 7 - 1;
-				int oppositeBowlIdx = (6 - idxOfBowl) * 2 + idxOfBowl;
+				int oppositeBowlIdx = (GameConstants.NR_OF_BOWLS_PER_PLAYER - 1 - idxOfBowl) * 2 + idxOfBowl;
 				if (!circularBoard.getBowl(oppositeBowlIdx).isEmpty()) {
 					int opponentsSeeds = circularBoard.getBowl(oppositeBowlIdx).empty();
-					((GravaHal) circularBoard.getBowl(gravaHalIdx))
+					((GravaHal) circularBoard.getGravaHal(player))
 							.addSeeds(1 + opponentsSeeds);
 					break;
 				} 
@@ -85,12 +92,21 @@ public class Game {
 				bowl = bowl.getNext();
 			}
 		}
-
+		//check for game end
+		if(checkGameEnd()) {
+			finalTurn();
+			return false;
+		}
 		if (isUsersGravaHal) {
 			logger.log(Level.INFO, "The last seed ended up in user's grava hal");
 			return true;
 		}
 		return false;
+	}
+	
+	protected void finalTurn() {
+		circularBoard.getGravaHal(GameConstants.PLAYER_1).addSeeds(circularBoard.getPlayerSeeds(GameConstants.PLAYER_1, true));
+		circularBoard.getGravaHal(GameConstants.PLAYER_2).addSeeds(circularBoard.getPlayerSeeds(GameConstants.PLAYER_2, true));
 	}
 
 }

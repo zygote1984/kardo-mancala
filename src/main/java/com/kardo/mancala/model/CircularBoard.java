@@ -2,7 +2,7 @@ package com.kardo.mancala.model;
 
 import java.util.ArrayList;
 
-import com.kardo.mancala.controller.GameConstants;
+import static com.kardo.mancala.controller.GameConstants.*;
 
 /**
  * Data structure that represents a the circular mancala board. Each bowl has a
@@ -14,7 +14,8 @@ import com.kardo.mancala.controller.GameConstants;
 public class CircularBoard {
 
 	private ArrayList<AbstractBowl> board;
-	private int initalNrOfSeeds = GameConstants.INIT_NR_OF_SEEDS;
+	private int initalNrOfSeeds = INIT_NR_OF_SEEDS;
+	// 1st bowl of player 1
 	private Bowl headBowl;
 
 	public CircularBoard() {
@@ -29,13 +30,13 @@ public class CircularBoard {
 	}
 
 	private void initBoard() {
-		headBowl = new Bowl(initalNrOfSeeds, GameConstants.PLAYER_1, null);
+		headBowl = new Bowl(initalNrOfSeeds, PLAYER_1, null);
 		AbstractBowl curBowl = headBowl;
 		board.add(curBowl);
-		for (int i = 2; i <= 14; i++) {
-			int player = ((double) i / 7) <= 1 ? GameConstants.PLAYER_1
-					: GameConstants.PLAYER_2;
-			if (i % 7 != 0) {
+		for (int i = 2; i <= NR_OF_BOWLS_PER_PLAYER * 2; i++) {
+			int player = ((double) i / NR_OF_BOWLS_PER_PLAYER) <= 1 ? PLAYER_1
+					: PLAYER_2;
+			if (i % NR_OF_BOWLS_PER_PLAYER != 0) {
 				curBowl.setNext(new Bowl(initalNrOfSeeds, player, null));
 			} else {
 				curBowl.setNext(new GravaHal(0, player, null));
@@ -70,6 +71,20 @@ public class CircularBoard {
 
 	public int empty(int index) {
 		return getBowl(index).empty();
+	}
+
+	public GravaHal getGravaHal(int player) {
+		return (GravaHal) board.get(player * NR_OF_BOWLS_PER_PLAYER - 1);
+	}
+
+	public int getPlayerSeeds(int player, boolean empty) {
+		int totalSeeds = 0;
+		for (int i = (player - 1) * NR_OF_BOWLS_PER_PLAYER; i < player
+				* NR_OF_BOWLS_PER_PLAYER - 1; i++) {
+			totalSeeds += empty ? empty(i) : board.get(i).getSeeds();
+		}
+		System.out.println(player + " " + totalSeeds);
+		return totalSeeds;
 	}
 
 }
