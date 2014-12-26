@@ -2,6 +2,7 @@ package com.kardo.mancala.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -222,15 +223,15 @@ public class GravaHalGame extends JApplet implements ActionListener {
 		bowl.updateUI();
 	}
 
-	private void displayResult(int winner) {
+	private void displayResult(int winner, int numberOfSeeds) {
 		JLabel resultLabel;
 		if (winner > 0) {
-			resultLabel = new JLabel("Player " + winner + " won!");
+			resultLabel = new JLabel("Player " + winner + " collected "  + numberOfSeeds + " seeds and won!");
 		} else {
 			resultLabel = new JLabel("It'a tie!");
 		}
 		resultLabel.setPreferredSize(new Dimension(width * 4, width));
-	    resultLabel.setFont(new Font("Courier New", Font.ITALIC, 50));
+	    resultLabel.setFont(new Font("Courier New", Font.ITALIC, 30));
 
 
 		JPanel winnerPanel = new JPanel();
@@ -247,7 +248,7 @@ public class GravaHalGame extends JApplet implements ActionListener {
 
 		contentPane = new JPanel(new BorderLayout());
 		contentPane.add(winnerPanel, BorderLayout.CENTER);
-		this.setContentPane(winnerPanel);
+		this.setContentPane(contentPane);
 		revalidate();
 		repaint();
 	}
@@ -284,13 +285,13 @@ public class GravaHalGame extends JApplet implements ActionListener {
 		}
 
 		@Override
-		public void announceWinner(int winner) {
-			displayResult(winner);
+		public void announceWinner(int winner, int numberOfSeeds) {
+			displayResult(winner, numberOfSeeds);
 		}
 
 		@Override
 		public void annouceTie() {
-			displayResult(-1);
+			displayResult(-1, -1);
 		}
 
 	}

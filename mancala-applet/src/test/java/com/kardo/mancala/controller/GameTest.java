@@ -25,7 +25,7 @@ public class GameTest {
 			}
 			
 			@Override
-			public void announceWinner(int winner) {
+			public void announceWinner(int winner, int seeds) {
 				
 			}
 			

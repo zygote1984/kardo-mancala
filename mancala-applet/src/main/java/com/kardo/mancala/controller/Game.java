@@ -32,10 +32,15 @@ public class Game {
 	public void distributeSeeds(int index) {
 		if (turn == circularBoard.getPlayer(index)
 				&& !circularBoard.getBowl(index).isEmpty()) {
-			if (!playTurn(index)) {
+			if (!playTurn(index, turn)) {
 				switchTurns();
 			}
 			listener.updateBoard();
+		}
+		// check for game end
+		if (checkGameEnd()) {
+			finalTurn();
+			determineWinner();
 		}
 	}
 
@@ -62,13 +67,13 @@ public class Game {
 
 	/**
 	 * distributes the seeds in bowl to the subsequent bowls
+	 * @param player 
 	 * 
 	 * @return true if the last seed ends up in user's grava hal
 	 */
-	private boolean playTurn(int index) {
+	private boolean playTurn(int index, int player) {
 		logger.log(Level.INFO, "Distribute seeds from bowl " + index);
 		AbstractBowl bowl = circularBoard.getBowl(index);
-		int player = circularBoard.getPlayer(index);
 		int seeds = circularBoard.empty(index);
 		boolean isUsersGravaHal = false;
 		for (int i = 1; i <= seeds; i++) {
@@ -80,6 +85,7 @@ public class Game {
 			if (isOpponentsGravaHal) {
 				bowl = bowl.getNext();
 			}
+			//last seed ends up in an empty bowl
 			if (bowl.getNext().isEmpty()
 					&& bowl.getNext().getPlayer() == player
 					&& bowl.getNext() instanceof Bowl && i == seeds) {
@@ -99,12 +105,6 @@ public class Game {
 				bowl = bowl.getNext();
 			}
 		}
-		// check for game end
-		if (checkGameEnd()) {
-			finalTurn();
-			determineWinner();
-			return false;
-		}
 		if (isUsersGravaHal) {
 			return true;
 		}
@@ -119,8 +119,9 @@ public class Game {
 		if (player1seeds == player2seeds) {
 			listener.annouceTie();
 		} else {
-			listener.announceWinner(player1seeds > player2seeds ? GameConstants.PLAYER_1
-					: GameConstants.PLAYER_2);
+			int winner = player1seeds > player2seeds ? GameConstants.PLAYER_1
+					: GameConstants.PLAYER_2;
+			listener.announceWinner(winner, circularBoard.getGravaHal(winner).getSeeds());
 		}
 	}
 
