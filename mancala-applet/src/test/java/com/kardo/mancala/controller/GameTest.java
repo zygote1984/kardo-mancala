@@ -12,16 +12,36 @@ import com.kardo.mancala.model.CircularBoard;
 public class GameTest {
 
 	Game game; 
+	GameListener listener;
 	
 	@Before
 	public void setUp() {
 		game = new Game();
+		listener = new GameListener() {
+			
+			@Override
+			public void updateBoard() {
+				
+			}
+			
+			@Override
+			public void announceWinner(int winner) {
+				
+			}
+			
+			@Override
+			public void annouceTie() {
+				
+			}
+		};
+		game.setListener(listener);
 	}
 	
 	
 	@Test
 	public void testDistributeSeeds() {
 		game = new MyGame();
+		game.setListener(listener);
 		game.distributeSeeds(3);
 		assertEquals(1, game.getBoard().get(6).getSeeds());
 		game.distributeSeeds(0);

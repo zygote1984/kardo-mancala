@@ -51,7 +51,7 @@ public class GravaHalGame extends JApplet implements ActionListener {
 	JPanel userBowls2;
 	JPanel bowls;
 	Container contentPane;
-	final int width = 150;
+	final int width = 120;
 	Game game;
 	ArrayList<JPanel> boardGUI;
 	JLabel user1Label;
@@ -260,12 +260,12 @@ public class GravaHalGame extends JApplet implements ActionListener {
 			super.paintComponent(g);
 			Graphics2D g2d = (Graphics2D) g;
 			g2d.setColor(Color.decode(SEED_COLOR));
-			g2d.fillOval(0, 0, 20, 20);
+			g2d.fillOval(0, 0, 10, 15);
 		}
 
 		@Override
 		public Dimension getPreferredSize() {
-			return new Dimension(20, 20);
+			return new Dimension(10, 15);
 		}
 
 		@Override
