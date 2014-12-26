@@ -10,7 +10,59 @@
 	<artifactId>mancala-war</artifactId>
 	<packaging>war</packaging>
 
-	<name>mancala</name>
+	<build>
+		<finalName>mancala</finalName>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.1</version>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>kardo</groupId>
+									<artifactId>mancala-applet</artifactId>
+									<version>1</version>
+									<outputDirectory>${project.build.directory}/${project.build.finalName}</outputDirectory>
+									<destFileName>mancala.jar</destFileName>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jarsigner-plugin</artifactId>
+				<version>1.2</version>
+				<configuration>
+					<archive>target/mancala/mancala.jar</archive>
+					<keystore>src/main/resources/mancala.keystore</keystore>
+					<storepass>mancala</storepass>
+					<alias>mancala</alias>
+					<verbose>true</verbose>
+				</configuration>
+				<executions>
+					<execution>
+						<id>sign</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
 
 	<dependencies>
 		<dependency>

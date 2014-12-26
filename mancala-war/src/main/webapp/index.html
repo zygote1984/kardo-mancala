@@ -2,12 +2,22 @@
 <html>
 <head>
 <meta charset="US-ASCII">
+<body bgcolor="#E6E6FA">
 <title>Grava Hal Game</title>
+<script src="//www.java.com/js/deployJava.js"></script>
 </head>
 
 <p>
-	<object codetype="application/java" classid="java:GravaHalGame.class" width="960" height="300"></object>
-</p>
+<script>
+    var attributes = {
+                      code: 'com.kardo.mancala.view.GravaHalGame.class',
+                      archive: 'mancala.jar',
+                      width: '960', 
+                      height: '300'};
+    var parameters = {java_arguments: '-Xmx256m'}; // customize per your needs
+    var version = '1.7'; // JDK version
+    deployJava.runApplet(attributes, parameters, version);
+</script></p>
 
 </body>
 </html>
