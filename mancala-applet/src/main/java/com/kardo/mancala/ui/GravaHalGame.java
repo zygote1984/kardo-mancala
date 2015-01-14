@@ -1,4 +1,4 @@
-package com.kardo.mancala.view;
+package com.kardo.mancala.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -28,9 +28,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
-import com.kardo.mancala.controller.Game;
-import com.kardo.mancala.controller.GameConstants;
-import com.kardo.mancala.controller.GameListener;
+import com.kardo.mancala.game.Game;
+import com.kardo.mancala.game.GameConstants;
 import com.kardo.mancala.model.AbstractBowl;
 
 /**

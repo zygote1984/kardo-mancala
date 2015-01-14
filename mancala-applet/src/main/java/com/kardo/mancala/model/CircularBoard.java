@@ -2,7 +2,7 @@ package com.kardo.mancala.model;
 
 import java.util.ArrayList;
 
-import static com.kardo.mancala.controller.GameConstants.*;
+import static com.kardo.mancala.game.GameConstants.*;
 
 /**
  * Data structure that represents a the circular mancala board. Each bowl has a

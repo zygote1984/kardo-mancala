@@ -7,7 +7,10 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.kardo.mancala.game.Game;
+import com.kardo.mancala.game.GameConstants;
 import com.kardo.mancala.model.CircularBoard;
+import com.kardo.mancala.ui.GameListener;
 
 public class GameTest {
 

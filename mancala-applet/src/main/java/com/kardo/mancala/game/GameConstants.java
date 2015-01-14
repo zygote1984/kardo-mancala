@@ -1,4 +1,4 @@
-package com.kardo.mancala.controller;
+package com.kardo.mancala.game;
 
 /**
  * Holds the small number of game constants

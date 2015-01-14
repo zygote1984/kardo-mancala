@@ -1,4 +1,4 @@
-package com.kardo.mancala.controller;
+package com.kardo.mancala.game;
 
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -8,6 +8,7 @@ import com.kardo.mancala.model.AbstractBowl;
 import com.kardo.mancala.model.Bowl;
 import com.kardo.mancala.model.CircularBoard;
 import com.kardo.mancala.model.GravaHal;
+import com.kardo.mancala.ui.GameListener;
 
 /**
  * This class implements the game mechanics and hold the turn information.

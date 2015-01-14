@@ -1,4 +1,4 @@
-package com.kardo.mancala.controller;
+package com.kardo.mancala.ui;
 
 public interface GameListener {
 	public void updateBoard();
